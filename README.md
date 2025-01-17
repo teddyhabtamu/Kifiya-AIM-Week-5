@@ -20,36 +20,28 @@ Set up a data ingestion system to fetch messages from multiple Ethiopian-based T
 3. **Preprocess Text Data**: Tokenize, normalize, and handle Amharic-specific linguistic features.
 4. **Clean and Structure Data**: Separate metadata from message content and store in a structured format.
 
-### Code Example
+## Task 2: Label a Subset of Dataset in CoNLL Format
 
-```python
-import os
-import asyncio
-from telethon import TelegramClient
+### Objective
 
-api_id = 'YOUR_API_ID'
-api_hash = 'YOUR_API_HASH'
-phone = 'YOUR_PHONE_NUMBER'
+Label a portion of the provided dataset in the CoNLL format for Named Entity Recognition (NER) tasks. Identify and label entities such as products, prices, and locations in Amharic text.
 
-client = TelegramClient('EthioMartScraperSession', api_id, api_hash)
+### Entity Types
 
-async def main():
-    await client.start(phone)
-    channel = 'channel1'  # Replace with the desired channel
-    async for message in client.iter_messages(channel):
-        if message.text:
-            save_text(message)
-        if message.media:
-            save_media(message)
+- **B-Product**: The beginning of a product entity.
+- **I-Product**: Inside a product entity.
+- **B-LOC**: The beginning of a location entity.
+- **I-LOC**: Inside a location entity.
+- **B-PRICE**: The beginning of a price entity.
+- **I-PRICE**: Inside a price entity.
+- **O**: Tokens that are outside any entities.
 
-def save_text(message):
-    with open('messages.txt', 'a') as f:
-        f.write(f"{message.sender_id}\t{message.date}\t{message.text}\n")
+### Steps
 
-def save_media(message):
-    path = f"media/{message.sender_id}_{message.date}"
-    os.makedirs(path, exist_ok=True)
-    message.download_media(file=path)
+1. **Load the Dataset**: Load the dataset containing the messages.
+2. **Tokenize and Label**: Tokenize each message and label the tokens according to the specified entity types.
+3. **Save in CoNLL Format**: Save the labeled data in a plain text file in the CoNLL format.
 
-# Run the main function
-asyncio.run(main())
+## Conclusion
+
+This project sets up a data ingestion system to fetch and preprocess messages from Telegram channels and labels a subset of the dataset in CoNLL format for NER tasks. The labeled data can be used to fine-tune language models for extracting key business entities such as product names, prices, and locations from Amharic text.
